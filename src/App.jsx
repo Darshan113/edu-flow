@@ -43,14 +43,22 @@ function Greetings({name}) {
   )
 }
 
+
 function Input() {
+  let number = 0;
   const [text,setText] = useState('');
   const handleTextChange = (value) => {
     setText(value);
   }
+  const increaseNum = () => {
+    number = number + 1;
+    console.log(number);
+  }
   return (
     <>
       <p>You have wrote -- {text}</p>
+      <p>Number {number}</p>
+      <button onClick={() => increaseNum()}>Increase</button>
       <input className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500' type="text" value={text} onChange={(e) => handleTextChange(e.target.value)} />
     </>
   )
