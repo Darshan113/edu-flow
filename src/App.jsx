@@ -3,6 +3,24 @@ import './App.css'
 
 function App() {
   let name  = 'darshan'
+
+  let users = [
+    {
+      name :'Darshan Panchal',
+      age: 24,
+      id: 1
+    },
+      {
+      name: 'Abhay Panchal',
+      age: 24,
+      id: 3
+    },
+    {
+      name: 'Mitesh Panchal',
+      age: 22,
+      id: 2
+    }
+  ]
   return (
     <>
       <h1 className='text-2xl font-bold text-blue-600'>Hello EduFlow 🚀</h1>
@@ -10,6 +28,9 @@ function App() {
       <div className="counter-container">
         <Counter/>
       </div>
+      <ul>
+        {users.map((user) => <li key={user.id}>{user.name}</li>)}
+      </ul>
     </>
   )
 }
