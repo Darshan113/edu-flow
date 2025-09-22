@@ -55,6 +55,17 @@ function PrivateRoute({ children }) {
   return isAuth ? children : <Navigate to="/" replace />;
 }
 
+function Parent() {
+  const [color, setColor] = useState("red");
+  return (
+    <>
+      <ColorPicker value={color} onChange={setColor} />
+      <Preview color={color} />
+    </>
+  );
+}
+
+
 function GoHome() {
   const navigate = useNavigate();
   return (
