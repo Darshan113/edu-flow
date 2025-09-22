@@ -7,11 +7,13 @@ import User from './pages/User'
 import Dashboard from './pages/Dashboard'
 import Settings from './pages/Settings'
 import Reports from './pages/Reports'
+import UsersList from './pages/UsersList'
+import UserDetail from './pages/UserDetail'
 
 const About = lazy(() => import('./pages/About'));
 
 function App() {
-    const navStyle = ({ isActive }) =>
+  const navStyle = ({ isActive }) =>
     isActive
       ? 'text-white bg-blue-600 px-3 py-1 rounded'
       : 'text-blue-600 hover:underline px-3 py-1'
@@ -22,24 +24,26 @@ function App() {
         <NavLink to='/' className={navStyle}>Home</NavLink>
         <NavLink to='/about' className={navStyle}>About</NavLink>
         <NavLink to='/contact' className={navStyle}>Contact</NavLink>
-        <NavLink to='/user/43' className={navStyle}>User 43</NavLink>
+        <NavLink to='/users' className={navStyle}>User List</NavLink>
+        {/* <NavLink to='/user/43' className={navStyle}>User 43</NavLink> */}
         <NavLink to='/dashboard' className={navStyle}>Dashoard</NavLink>
       </header>
       <main className="p-6">
-        <GoHome/>
-           <Routes>
+        <GoHome />
+        <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<Suspense fallback={<p>Loading---</p>}>
             <About />
           </Suspense>} />
           <Route path="/contact" element={<Contact />} />
-          <Route path="/user/:id" element={<User />} />
+          <Route path="/users" element={<UsersList />} />
+          <Route path="/users/:id" element={<UserDetail />} />
           <Route path="/dashboard" element={<Dashboard />}>
             {/* ✅ Children routes */}
             <Route index element={<p>👋 Welcome to the dashboard!</p>} />
-            <Route path="settings" element={    <PrivateRoute>
-      <Settings />
-    </PrivateRoute>} />
+            <Route path="settings" element={<PrivateRoute>
+              <Settings />
+            </PrivateRoute>} />
             <Route path="reports" element={<Reports />} />
           </Route>
           <Route path="*" element={<p className="text-red-600">404: Page not found</p>} />
@@ -58,7 +62,7 @@ function PrivateRoute({ children }) {
 function GoHome() {
   const navigate = useNavigate();
   return (
-     <button
+    <button
       className="bg-blue-500 text-white px-3 py-1 rounded"
       onClick={() => navigate('/')}
     >

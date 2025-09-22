@@ -1,4 +1,5 @@
 import { Link, Outlet } from 'react-router-dom'
+import Timer from './UseEffectEx'
 
 export default function Dashboard() {
   return (
@@ -9,6 +10,7 @@ export default function Dashboard() {
         <Link to="reports" className="text-blue-600">Reports</Link>
       </nav>
       <div className="mt-4">
+        <Timer></Timer>
         <Outlet />
       </div>
     </div>
