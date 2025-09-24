@@ -9,6 +9,10 @@ import Settings from './pages/Settings'
 import Reports from './pages/Reports'
 import UsersList from './pages/UsersList'
 import UserDetail from './pages/UserDetail'
+import Counter from './pages/Counter'
+import { CartProvider } from './context/CartContext'
+import ShopPage from './pages/Shop'
+import CartPage from './pages/Cart'
 
 const About = lazy(() => import('./pages/About'));
 
@@ -19,6 +23,7 @@ function App() {
       : 'text-blue-600 hover:underline px-3 py-1'
 
   return (
+    <CartProvider>
     <div className="font-sans">
       <header className="bg-gray-100 p-4 flex gap-4">
         <NavLink to='/' className={navStyle}>Home</NavLink>
@@ -27,6 +32,8 @@ function App() {
         <NavLink to='/users' className={navStyle}>User List</NavLink>
         {/* <NavLink to='/user/43' className={navStyle}>User 43</NavLink> */}
         <NavLink to='/dashboard' className={navStyle}>Dashoard</NavLink>
+        <NavLink to='/counter' className={navStyle}>Counter</NavLink>
+        <NavLink to='/shop' className={navStyle}>Shop</NavLink>
       </header>
       <main className="p-6">
         <GoHome />
@@ -38,6 +45,7 @@ function App() {
           <Route path="/contact" element={<Contact />} />
           <Route path="/users" element={<UsersList />} />
           <Route path="/users/:id" element={<UserDetail />} />
+          <Route path="/counter" element={<Counter />}/>
           <Route path="/dashboard" element={<Dashboard />}>
             {/* ✅ Children routes */}
             <Route index element={<p>👋 Welcome to the dashboard!</p>} />
@@ -46,11 +54,14 @@ function App() {
             </PrivateRoute>} />
             <Route path="reports" element={<Reports />} />
           </Route>
+           <Route path="/shop" element={<ShopPage />} />
+        <Route path="/cart" element={<CartPage />} />
           <Route path="*" element={<p className="text-red-600">404: Page not found</p>} />
 
         </Routes>
       </main>
     </div>
+    </CartProvider>
   )
 }
 
