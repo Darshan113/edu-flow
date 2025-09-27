@@ -1,21 +1,21 @@
-import React, { useEffect, useState, useMemo, useCallback, useRef, useReducer, createContext, useContext, lazy, Suspense } from 'react'
+import { lazy, Suspense } from 'react'
+import { useSelector } from "react-redux"
+import { Navigate, NavLink, Route, Routes, useNavigate } from 'react-router'
 import './App.css'
-import { Routes, Route, NavLink, useNavigate, Navigate } from 'react-router'
-import Home from './pages/Home'
-import Contact from './pages/Contact'
-import User from './pages/User'
-import Dashboard from './pages/Dashboard'
-import Settings from './pages/Settings'
-import Reports from './pages/Reports'
-import UsersList from './pages/UsersList'
-import UserDetail from './pages/UserDetail'
-import Counter from './pages/Counter'
 import { CartProvider } from './context/CartContext'
-import ShopPage from './pages/Shop'
 import CartPage from './pages/Cart'
-import ProductList from './pages/cart/ProductList'
 import CartS from './pages/cart/CartS'
-
+import ProductList from './pages/cart/ProductList'
+import Contact from './pages/Contact'
+import Counter from './pages/Counter'
+import Dashboard from './pages/Dashboard'
+import Home from './pages/Home'
+import Reports from './pages/Reports'
+import Settings from './pages/Settings'
+import ShopPage from './pages/Shop'
+import UserDetail from './pages/UserDetail'
+import UsersList from './pages/UsersList'
+import Login from './pages/Login'
 const About = lazy(() => import('./pages/About'));
 
 function App() {
@@ -30,6 +30,7 @@ function App() {
         <div className="font-sans">
           <header className="bg-gray-100 p-4 flex gap-4">
             <NavLink to='/' className={navStyle}>Home</NavLink>
+            <NavLink to='/login' className={navStyle}>Login</NavLink>
             <NavLink to='/about' className={navStyle}>About</NavLink>
             <NavLink to='/contact' className={navStyle}>Contact</NavLink>
             <NavLink to='/users' className={navStyle}>User List</NavLink>
@@ -60,9 +61,23 @@ function App() {
                 <Route path="reports" element={<Reports />} />
               </Route>
               <Route path="/shop" element={<ShopPage />} />
-              <Route path="/cart" element={<CartPage />} />
-              <Route path="/productlist" element={<ProductList />} />
-              <Route path="/carts" element={<CartS />} />
+              <Route path="/login" element={<Login />} />
+              <Route
+                path="/cart"
+                element={
+                  <ReduxPrivateRoute>
+                    <CartPage />
+                  </ReduxPrivateRoute>
+                }
+              />
+              <Route path="/productlist" element={
+                <ReduxPrivateRoute>
+                  <ProductList />
+                </ReduxPrivateRoute>
+              } />
+              <Route path="/carts" element={<ReduxPrivateRoute>
+                <CartS />
+              </ReduxPrivateRoute>} />
               <Route path="*" element={<p className="text-red-600">404: Page not found</p>} />
 
             </Routes>
@@ -76,6 +91,11 @@ function App() {
 function PrivateRoute({ children }) {
   const isAuth = true; // change to true to simulate login
   return isAuth ? children : <Navigate to="/" replace />;
+}
+
+function ReduxPrivateRoute({ children }) {
+  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
+  return isLoggedIn ? children : <Navigate to="/login" replace />;
 }
 
 function GoHome() {
