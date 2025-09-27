@@ -1,13 +1,13 @@
 import { useDispatch, useSelector } from "react-redux"
-import { products } from "../../data/products";
 import { addItem } from "../../features/cart/cartSlice";
-import { fetchProducts } from "../../features/products/productSlice";
+import { fetchProducts, selectAllProducts } from "../../features/products/productSlice";
 import { useEffect } from "react";
 
 
 export default function ProductList() {
     const dispatch = useDispatch();
-    const { items, status, error } = useSelector((state) => state.products);
+    const { status, error } = useSelector((state) => state.products);
+    const products = useSelector(selectAllProducts);
     useEffect(() => {
         if (status === "idle") {
             dispatch(fetchProducts());
@@ -20,7 +20,7 @@ export default function ProductList() {
     return (
         <div className="p-4 space-y-4">
             <h2 className="text-xl font-bold">Products</h2>
-            {items.map((product) => (
+            {products.map((product) => (
                 <div key={product.id} className="flex justify-between items-center border p-3 rounded">
                     <span>{product.title} - ${product.price}</span>
                     <button

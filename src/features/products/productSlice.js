@@ -1,6 +1,7 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createEntityAdapter, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
+const productEntityAdapter = createEntityAdapter();
 
 export const fetchProducts = createAsyncThunk(
     'products/fetchProducts',
@@ -12,20 +13,24 @@ export const fetchProducts = createAsyncThunk(
 
 const productSlice = createSlice({
     name: 'products',
-    initialState: {
-        items: [],
-        status: 'idle', // idle, loading, succeded, failed
-        error: null
+    initialState: productEntityAdapter.getInitialState({
+        status: "idle",
+        error: null,
+    }),
+    reducers: {
+        productAdded: productEntityAdapter.addOne,
+        productUpdated: productEntityAdapter.updateOne,
+        productRemoved: productEntityAdapter.removeOne,
+        productReceived: productEntityAdapter.setAll,
     },
-    reducers: {},
     extraReducers: (builder) => {
         builder
-            .addCase(fetchProducts.pending,(state) => {
+            .addCase(fetchProducts.pending, (state) => {
                 state.status = 'loading';
             })
-             .addCase(fetchProducts.fulfilled, (state, action) => {
+            .addCase(fetchProducts.fulfilled, (state, action) => {
                 state.status = "succeeded";
-                state.items = action.payload;
+                productEntityAdapter.setAll(state, action.payload);
             })
             .addCase(fetchProducts.rejected, (state, action) => {
                 state.status = "failed";
@@ -33,5 +38,11 @@ const productSlice = createSlice({
             });
     }
 })
+
+// exports selctors
+export const {
+    selectAll: selectAllProducts,
+    selectById: selectProductById
+} = productEntityAdapter.getSelectors(state => state.products);
 
 export default productSlice.reducer;
