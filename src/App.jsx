@@ -16,6 +16,7 @@ import ShopPage from './pages/Shop'
 import UserDetail from './pages/UserDetail'
 import UsersList from './pages/UsersList'
 import Login from './pages/Login'
+import AddProduct from './pages/cart/AddProduct'
 const About = lazy(() => import('./pages/About'));
 
 function App() {
@@ -39,6 +40,7 @@ function App() {
             <NavLink to='/counter' className={navStyle}>Counter</NavLink>
             <NavLink to='/shop' className={navStyle}>Shop</NavLink>
             <NavLink to='/productlist' className={navStyle}>Product List</NavLink>
+            <NavLink to='/addProduct' className={navStyle}>add product</NavLink>
             <NavLink to='/carts' className={navStyle}>Cart S</NavLink>
           </header>
           <main className="p-6">
@@ -70,6 +72,7 @@ function App() {
                   </ReduxPrivateRoute>
                 }
               />
+              <Route path='/addProduct' element={ <AddProduct/> } />
               <Route path="/productlist" element={
                 <ReduxPrivateRoute>
                   <ProductList />
